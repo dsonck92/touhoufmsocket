@@ -135,6 +135,10 @@ void TouhouFMSocket::handleMessage(QString info)
         QVariantMap notif = msg.value("notification").toMap();
         emit newNotification(notif.value("type").toString(),notif.value("text").toString());
     }
+    else
+    {
+        emit newSubmessage(type,msg.value(type));
+    }
 }
 
 void TouhouFMSocket::handleConnected()

@@ -88,6 +88,8 @@ signals:
 
     void newNotification(QString type, QString text);
 
+    void newSubmessage(QString type, QVariant msg);
+
 public slots:
     /** Send a song skip request.
      * This slot sends a song skip request to TouHou.FM.
