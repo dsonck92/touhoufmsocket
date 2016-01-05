@@ -59,7 +59,7 @@ void TouhouFMSocket::skipSong()
 bool TouhouFMSocket::open()
 {
     // Open the websocket connection to the websocket address
-    m_wsInfo->open(QUrl("ws://en.touhou.fm/wsapp/"));
+    m_wsInfo->open(QUrl("ws://www.touhou.fm/wsapp/"));
 
     return true;
 }
