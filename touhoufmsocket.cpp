@@ -161,7 +161,7 @@ void TouhouFMSocket::timerEvent(QTimerEvent *ev)
 
     if(m_wsInfo->state() == QAbstractSocket::UnconnectedState)
     {
-        m_wsInfo->open(QUrl("ws://en.touhou.fm/wsapp/"));
+        m_wsInfo->open(QUrl("ws://www.touhou.fm/wsapp/"));
     }
 }
 
