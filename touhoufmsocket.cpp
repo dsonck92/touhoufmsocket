@@ -2,8 +2,13 @@
 #include <QJsonDocument>
 
 
-TouhouFMSocket::TouhouFMSocket(QString authToken, QObject *parent) : QObject(parent)
+TouhouFMSocket::TouhouFMSocket(QString name, QString description, QStringList perms, QString authToken, QObject *parent) : QObject(parent)
 {
+    m_name = name;
+    m_description = description;
+
+    m_perms = perms;
+
     // Create the underlying websocket
     m_wsInfo = new QWebSocket(QString(),QWebSocketProtocol::VersionLatest, this);
 
@@ -32,8 +37,8 @@ void TouhouFMSocket::login()
     {
 
         msg.insert("type","get-token");
-        msg.insert("name","TouHou.FM Radio App");
-        msg.insert("description","The official desktop radio player.");
+        msg.insert("name",m_name);
+        msg.insert("description",m_description);
 
         m_wsInfo->sendTextMessage(QJsonDocument::fromVariant(msg).toJson());
     }
@@ -108,9 +113,7 @@ void TouhouFMSocket::handleMessage(QString info)
         QVariantMap msg2;
         msg2["type"] = "get-perms";
         msg2["token"] = m_sAuth;
-        QStringList perms;
-        perms << "user.rating.submit";
-        msg2["perms"] = perms;
+        msg2["perms"] = m_perms;
 
         m_wsInfo->sendTextMessage(QJsonDocument::fromVariant(msg2).toJson());
 
@@ -185,4 +188,14 @@ void TouhouFMSocket::sendReport(QString what, QString details)
     msg.insert("detail",details);
 
     m_wsInfo->sendTextMessage(QJsonDocument::fromVariant(msg).toJson());
+}
+
+void TouhouFMSocket::sendSubmessage(QString type, QVariant msg)
+{
+    QVariantMap rmsg;
+
+    rmsg.insert("type",type);
+    rmsg.insert(type,msg);
+
+    m_wsInfo->sendTextMessage(QJsonDocument::fromVariant(rmsg).toJson());
 }

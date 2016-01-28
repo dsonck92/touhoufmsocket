@@ -20,6 +20,7 @@ class TouhouFMSocket : public QObject
 
     QStringList m_slWhats; /**< What's wrong options */
 
+    QString m_name,m_description;
 
 public:
     /** Constructor
@@ -27,7 +28,7 @@ public:
      * @param authToken the authtoken to be sent upon #login
      * @param parent the parent object this object belongs to
      */
-    explicit TouhouFMSocket(QString authToken = QString(), QObject *parent = 0);
+    explicit TouhouFMSocket(QString name, QString description, QStringList perms, QString authToken = QString(), QObject *parent = 0);
 
     /** Opens the connection
      */
@@ -103,6 +104,7 @@ public slots:
 
     void sendReport(QString what,QString details);
 
+    void sendSubmessage(QString type, QVariant msg);
 private slots:
     void handleMessage(QString info);
     void handleConnected();
