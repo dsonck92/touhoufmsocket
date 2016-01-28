@@ -15,6 +15,7 @@ TouhouFMSocket::TouhouFMSocket(QString name, QString description, QStringList pe
     // Connect the essential signals
     connect(m_wsInfo,SIGNAL(connected()),SLOT(handleConnected()));
     connect(m_wsInfo,SIGNAL(textMessageReceived(QString)),SLOT(handleMessage(QString)));
+    connect(m_wsInfo,SIGNAL(sslErrors(QList<QSslError>)),m_wsInfo,SLOT(ignoreSslErrors()));
 
     // Copy over our auth token
     m_sAuth = authToken;
@@ -64,7 +65,7 @@ void TouhouFMSocket::skipSong()
 bool TouhouFMSocket::open()
 {
     // Open the websocket connection to the websocket address
-    m_wsInfo->open(QUrl("ws://www.touhou.fm/wsapp/"));
+    m_wsInfo->open(QUrl("wss://www.touhou.fm/wsapp/"));
 
     return true;
 }
@@ -164,7 +165,7 @@ void TouhouFMSocket::timerEvent(QTimerEvent *ev)
 
     if(m_wsInfo->state() == QAbstractSocket::UnconnectedState)
     {
-        m_wsInfo->open(QUrl("ws://www.touhou.fm/wsapp/"));
+        m_wsInfo->open(QUrl("wss://www.touhou.fm/wsapp/"));
     }
 }
 
